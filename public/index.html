@@ -8,7 +8,15 @@
 		<title>Mandelbrot set</title>
 	</head>
 	<body>
-		<canvas height="600" width="900" id="can"></canvas>
+		<div id="container">
+			<canvas height="600" width="900" id="can"></canvas>
+			<form class="slider-container" id="iterations">
+				<input type="range" min="1" max="500" value="50" class="slider" />
+				Maximum number of iterations:
+				<input type="number" class="value" value="50"></input>
+			</form>
+		</div>
+		<script src="mandelbrot.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
