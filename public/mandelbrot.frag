@@ -4,7 +4,7 @@ uniform vec2 pan;
 uniform float scale;
 
 uniform float iterations;
-const float max_iterations = 1000.0;
+const float max_iterations = 10000.0;
 
 varying vec2 _pos;
 

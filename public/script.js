@@ -6,6 +6,11 @@ let iterations = 50;
 let pan = [0, 0];
 let scale = 1;
 
+let speed = 0.01;
+let zoomingIn = false;
+let zoomingOut = false;
+let m = {x: 0, y: 0};
+
 if (!gl) {
 	console.log("WebGL not supported, falling back to experimental");
 	gl = canvas.getContext("webgl-experimental");
@@ -62,20 +67,47 @@ const init = async () =>{
 };
 
 let draw = () => {
-  gl.clearColor(0, 0, 0, 1.0)
-  gl.clear(gl.COLOR_BUFFER_BIT);
-  
-  // update uniforms
-  gl.uniform1f(uniforms.iterations, iterations);
-  gl.uniform2fv(uniforms.pan, pan);
-  gl.uniform1f(uniforms.scale, scale);
-  
-  gl.drawArrays(gl.TRIANGLES, 0, 6);
-  requestAnimationFrame(draw);
+	gl.clearColor(0, 0, 0, 1.0)
+	gl.clear(gl.COLOR_BUFFER_BIT);
+
+	// update uniforms
+	gl.uniform1f(uniforms.iterations, iterations);
+	gl.uniform2fv(uniforms.pan, pan);
+	gl.uniform1f(uniforms.scale, scale);
+	if (zoomingIn){
+		scale -= scale*speed;
+		pan[0] -= scale*m.x*speed;
+		pan[1] -= scale*m.y*speed;
+	}else if(zoomingOut){
+		scale += scale*speed;
+		pan[0] += scale*m.x*speed;
+		pan[1] += scale*m.y*speed;
+	}
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+	requestAnimationFrame(draw);
 }
 
 let slider = document.querySelector("#iterations>.slider");
 let sliderValue = document.querySelector("#iterations>.value");
+
+can.ondblclick = can.oncontextmenu = can.onmousedown = (e) => {
+	if (e.button == 0){
+		zoomingIn = true;
+	}
+	else if (e.button == 2){
+		zoomingIn = false;
+		zoomingOut = true;
+	}
+	m.x = 3*(e.offsetX/e.target.width)-2;
+	m.y = 2*(1-e.offsetY/e.target.height)-1;
+	e.preventDefault();
+}
+can.onmouseup = (e) => {
+	if (e.button == 0)
+		zoomingIn = false;
+	else if (e.button == 2)
+		zoomingOut = false;
+}
 
 let iterationsChanged = () => {
 	if (sliderValue === document.activeElement) {
