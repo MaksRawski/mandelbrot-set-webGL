@@ -2,6 +2,8 @@ precision highp float;
 
 uniform vec2 pan;
 uniform float scale;
+uniform vec3 colorPhase;
+uniform vec3 colorPhaseStart;
 
 uniform float iterations;
 const float max_iterations = 10000.0;
@@ -42,13 +44,13 @@ float mandelbrot(ComplexNumber c){
 	return iterations; // is stable
 }
 
+vec3 colorValue(float iterations) {
+	return pow(sin(colorPhase.xyz * iterations + colorPhaseStart)*0.5+0.5, vec3(1.5));
+}
+
 void main() {
     ComplexNumber c = ComplexNumber((_pos.x*1.5 - 0.5 )*scale - pan.x, _pos.y *scale - pan.y);
 
-	float v = mandelbrot(c)/iterations;
-	vec3 color = cr;
-	if (v != 1.0){
-		color = bg + v*fg;
-	}
-    gl_FragColor = vec4(color/255.0,1.0);
+	vec3 color = colorValue(mandelbrot(c));
+    gl_FragColor = vec4(color,1.0);
 }

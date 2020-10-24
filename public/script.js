@@ -11,6 +11,9 @@ let zoomingIn = false;
 let zoomingOut = false;
 let m = {x: 0, y: 0};
 
+let colorPhase = [5/80, 7/80, 11/80];
+let colorPhaseStart = [1, 1, 1];
+
 if (!gl) {
 	console.log("WebGL not supported, falling back to experimental");
 	gl = canvas.getContext("webgl-experimental");
@@ -53,7 +56,9 @@ const init = async () =>{
 	uniforms = {
 		iterations: gl.getUniformLocation(program, 'iterations'),
 		pan: gl.getUniformLocation(program, 'pan'),
-		scale: gl.getUniformLocation(program, 'scale')
+		scale: gl.getUniformLocation(program, 'scale'),
+		colorPhase: gl.getUniformLocation(program, 'colorPhase'),
+		colorPhaseStart: gl.getUniformLocation(program, 'colorPhaseStart'),
 	}
 
 	gl.validateProgram(program);
@@ -74,6 +79,10 @@ let draw = () => {
 	gl.uniform1f(uniforms.iterations, iterations);
 	gl.uniform2fv(uniforms.pan, pan);
 	gl.uniform1f(uniforms.scale, scale);
+	gl.uniform3fv(uniforms.colorPhase, colorPhase);
+	gl.uniform3fv(uniforms.colorPhaseStart, colorPhaseStart);
+
+	if (zoomingIn || zoomingOut) requestAnimationFrame(draw);
 	if (zoomingIn){
 		scale -= scale*speed;
 		pan[0] -= scale*m.x*speed;
@@ -84,11 +93,7 @@ let draw = () => {
 		pan[1] += scale*m.y*speed;
 	}
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
-	requestAnimationFrame(draw);
 }
-
-let slider = document.querySelector("#iterations>.slider");
-let sliderValue = document.querySelector("#iterations>.value");
 
 can.ondblclick = can.oncontextmenu = can.onmousedown = (e) => {
 	if (e.button == 0){
@@ -101,6 +106,7 @@ can.ondblclick = can.oncontextmenu = can.onmousedown = (e) => {
 	m.x = 3*(e.offsetX/e.target.width)-2;
 	m.y = 2*(1-e.offsetY/e.target.height)-1;
 	e.preventDefault();
+	requestAnimationFrame(draw);
 }
 can.onmouseup = (e) => {
 	if (e.button == 0)
@@ -108,20 +114,45 @@ can.onmouseup = (e) => {
 	else if (e.button == 2)
 		zoomingOut = false;
 }
+document.onkeydown = (e) => {
+	if (e.key == "r") {
+		pan = [0,0];
+		scale = 1;
+	}
+}
 
-let iterationsChanged = () => {
-	if (sliderValue === document.activeElement) {
-		iterations = sliderValue.value
-		slider.value = iterations
+let change = (div) => {
+	let range = div.children[0];
+	let value = div.children[1];
+
+	if (range === document.activeElement) {
+		value.value = range.value;
 	}else{
-		iterations = Number(slider.value);
-		sliderValue.value = iterations;
+		range.value = value.value;
+	}
+
+	// update variables
+	switch(div.id){
+		case "iterations":
+			iterations = value.value;
+			break;
+		case "r":
+			colorPhase[0] = value.value/80;
+			break;
+		case "g":
+			colorPhase[1] = value.value/80;
+			break;
+		case "b":
+			colorPhase[2] = value.value/80;
+			break;
+		case "start":
+			colorPhaseStart[0] = value.value;
+			colorPhaseStart[1] = value.value;
+			colorPhaseStart[2] = value.value;
+			break;
 	}
 	draw();
 	return false;
 }
-slider.oninput = iterationsChanged;
-slider.form.onsubmit = iterationsChanged;
-sliderValue.onchange = iterationsChanged;
 
 init();
