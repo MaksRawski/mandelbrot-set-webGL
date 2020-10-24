@@ -14,8 +14,18 @@
 				<h3>Properties:</h3>
 				<div id="iterations">
 					<input type="range" oninput="change(this.parentElement)" min="1" max="500" value="50" class="slider" />
-					Maximum number of iterations:
+					Iterations:
 					<input type="number" onchange="change(this.parentElement)" class="value" value="50"></input>
+				</div>
+				<div id="scale">
+					<input type="range" oninput="change(this.parentElement)" min="1" max="100" value="1" class="slider" />
+					Zoom:
+					<input type="number" onchange="change(this.parentElement)" class="value" value="1"></input>
+					<span id="zoomButton" onclick="zoom()">▶</span>
+				</div>
+				<div id="pos">
+					x: <input type="number" oninput="updateCords(this)" id="x" value=0><br>
+					y: <input type="number" oninput="updateCords(this)" id="y" value=0><br>
 				</div>
 				<h3>Colors:</h3>
 				<div id="r">

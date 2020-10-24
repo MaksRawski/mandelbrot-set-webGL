@@ -49,6 +49,7 @@ const init = async () =>{
 	gl.enableVertexAttribArray(gl.getAttribLocation(program,"pos"));
 
 	let vertices = new Float32Array([1, 1, -1, 1, 1, -1, -1, 1, 1, -1, -1, -1]);
+
 	let buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 	gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
@@ -82,7 +83,12 @@ let draw = () => {
 	gl.uniform3fv(uniforms.colorPhase, colorPhase);
 	gl.uniform3fv(uniforms.colorPhaseStart, colorPhaseStart);
 
-	if (zoomingIn || zoomingOut) requestAnimationFrame(draw);
+	if (zoomingIn || zoomingOut) {
+		document.querySelector("#scale>.value").value = Math.round(1/scale);
+		document.querySelector("#scale>.slider").max = 2*Math.round(1/scale);
+		document.querySelector("#scale>.slider").value = Math.round(1/scale);
+		requestAnimationFrame(draw);
+	}
 	if (zoomingIn){
 		scale -= scale*speed;
 		pan[0] -= scale*m.x*speed;
@@ -113,11 +119,14 @@ can.onmouseup = (e) => {
 		zoomingIn = false;
 	else if (e.button == 2)
 		zoomingOut = false;
+	document.querySelector("#x").value = pan[0];
+	document.querySelector("#y").value = pan[1];
 }
 document.onkeydown = (e) => {
 	if (e.key == "r") {
 		pan = [0,0];
 		scale = 1;
+		draw();
 	}
 }
 
@@ -135,6 +144,9 @@ let change = (div) => {
 	switch(div.id){
 		case "iterations":
 			iterations = value.value;
+			break;
+		case "scale":
+			scale = 1/value.value;
 			break;
 		case "r":
 			colorPhase[0] = value.value/80;
@@ -154,5 +166,23 @@ let change = (div) => {
 	draw();
 	return false;
 }
-
+let updateCords = (elem) => {
+	if (Number(elem.value)){
+		pan[elem.id=="x"?0:1] = Number(elem.value);
+	}
+	else pan[elem.id=="x"?0:1] = 0;
+	draw();
+}
+let zoom = () => {
+	if (zoomingIn == false){
+		zoomingIn = true; 
+		m.x = 0;
+		m.y = 0;
+		document.querySelector("#zoomButton").innerHTML = "🗙";
+	}else{
+		zoomingIn = false
+		document.querySelector("#zoomButton").innerHTML = "▶";
+	}
+	draw();
+}
 init();
