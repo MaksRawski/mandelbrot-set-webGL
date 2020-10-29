@@ -13,9 +13,14 @@
 			<form class="slider-container">
 				<h3>Properties:</h3>
 				<div id="iterations">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="500" value="50" class="slider" />
+					<input type="range" oninput="change(this.parentElement)" min="1" max="500" value="175" class="slider" />
 					Iterations:
-					<input type="number" onchange="change(this.parentElement)" class="value" value="50"></input>
+					<input type="number" onchange="change(this.parentElement)" class="value" value="175"></input>
+				</div>
+				<div id="escape_radius">
+					<input type="range" oninput="change(this.parentElement)" min="1" max="50" value="20" class="slider" />
+					Escape radius:
+					<input type="number" onchange="change(this.parentElement)" class="value" value="20"></input>
 				</div>
 				<div id="scale">
 					<input type="range" oninput="change(this.parentElement)" min="1" max="100" value="1" class="slider" />
@@ -29,24 +34,19 @@
 				</div>
 				<h3>Colors:</h3>
 				<div id="r">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="20" value="5" class="slider" />
-					colorPhase R:
-					<input type="number" onchange="change(this.parentElement)" class="value" value="5"></input>
+					<input type="range" oninput="change(this.parentElement)" min="0" max="255" value="110" class="slider" />
+					Red:
+					<input type="number" onchange="change(this.parentElement)" class="value" value="110"></input>
 				</div>
 				<div id="g">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="20" value="7" class="slider" />
-					colorPhase G:
-					<input type="number" onchange="change(this.parentElement)"  class="value" value="7"></input>
+					<input type="range" oninput="change(this.parentElement)" min="0" max="255" value="10" class="slider" />
+					Green:
+					<input type="number" onchange="change(this.parentElement)"  class="value" value="10"></input>
 				</div>
 				<div id="b">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="20" value="11" class="slider" />
-					colorPhase B:
-					<input type="number" onchange="change(this.parentElement)"  class="value" value="11"></input>
-				</div>
-				<div id="start">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="20" value="1" class="slider" />
-					colorPhaseStart:
-					<input type="number" onchange="change(this.parentElement)"  class="value" value="1"></input>
+					<input type="range" oninput="change(this.parentElement)" min="0" max="255" value="80" class="slider" />
+					Blue:
+					<input type="number" onchange="change(this.parentElement)"  class="value" value="80"></input>
 				</div>
 			</form>
 		</div>

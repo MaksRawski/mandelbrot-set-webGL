@@ -2,17 +2,17 @@ let can = document.getElementById("can");
 let gl = can.getContext("webgl");
 
 let unfiorms = {};
-let iterations = 50;
+let iterations = 175;
 let pan = [0, 0];
 let scale = 1;
+let escape_radius = 20;
 
 let speed = 0.01;
 let zoomingIn = false;
 let zoomingOut = false;
 let m = {x: 0, y: 0};
 
-let colorPhase = [5/80, 7/80, 11/80];
-let colorPhaseStart = [1, 1, 1];
+let colors = [110/255, 10/255, 80/255];
 
 if (!gl) {
 	console.log("WebGL not supported, falling back to experimental");
@@ -56,10 +56,10 @@ const init = async () =>{
 
 	uniforms = {
 		iterations: gl.getUniformLocation(program, 'iterations'),
+		escape_radius: gl.getUniformLocation(program, 'escape_radius'),
 		pan: gl.getUniformLocation(program, 'pan'),
 		scale: gl.getUniformLocation(program, 'scale'),
-		colorPhase: gl.getUniformLocation(program, 'colorPhase'),
-		colorPhaseStart: gl.getUniformLocation(program, 'colorPhaseStart'),
+		colors: gl.getUniformLocation(program, 'colors'),
 	}
 
 	gl.validateProgram(program);
@@ -72,16 +72,25 @@ const init = async () =>{
 	draw();
 };
 
+let toDouble = (n) => {
+	let dbl = [];
+	dbl[0] = +n.toFixed(9).slice(0, -1);
+	dbl[1] = +n.toFixed(17) - dbl[0];
+	dbl[1] = +dbl[1].toFixed(17);
+
+	return dbl;
+}
+
 let draw = () => {
 	gl.clearColor(0, 0, 0, 1.0)
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	// update uniforms
 	gl.uniform1f(uniforms.iterations, iterations);
-	gl.uniform2fv(uniforms.pan, pan);
-	gl.uniform1f(uniforms.scale, scale);
-	gl.uniform3fv(uniforms.colorPhase, colorPhase);
-	gl.uniform3fv(uniforms.colorPhaseStart, colorPhaseStart);
+	gl.uniform1f(uniforms.escape_radius, escape_radius);
+	gl.uniform4fv(uniforms.pan, toDouble(pan[0]).concat(toDouble(pan[1])));
+	gl.uniform2fv(uniforms.scale, toDouble(scale));
+	gl.uniform3fv(uniforms.colors, colors);
 
 	if (zoomingIn || zoomingOut) {
 		document.querySelector("#scale>.value").value = Math.round(1/scale);
@@ -145,22 +154,20 @@ let change = (div) => {
 		case "iterations":
 			iterations = value.value;
 			break;
+		case "escape_radius":
+			escape_radius = value.value;
+			break;
 		case "scale":
 			scale = 1/value.value;
 			break;
 		case "r":
-			colorPhase[0] = value.value/80;
+			colors[0] = value.value/255;
 			break;
 		case "g":
-			colorPhase[1] = value.value/80;
+			colors[1] = value.value/255;
 			break;
 		case "b":
-			colorPhase[2] = value.value/80;
-			break;
-		case "start":
-			colorPhaseStart[0] = value.value;
-			colorPhaseStart[1] = value.value;
-			colorPhaseStart[2] = value.value;
+			colors[2] = value.value/255;
 			break;
 	}
 	draw();
