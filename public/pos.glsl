@@ -1,8 +1,9 @@
 precision highp float;
 
-attribute vec2 pos;
+attribute vec3 pos;
 varying vec2 _pos;
 
 void main() {
-	gl_Position = vec4(_pos = pos, 0.0, 1.0);
+	_pos = vec2(pos.x*1.5-0.5, pos.y);
+	gl_Position = vec4(pos, 1.0);
 }

@@ -1,5 +1,5 @@
 let can = document.getElementById("can");
-let gl = can.getContext("webgl");
+let gl = can.getContext("webgl2");
 
 let unfiorms = {};
 let iterations = 175;
@@ -100,12 +100,12 @@ let draw = () => {
 	}
 	if (zoomingIn){
 		scale -= scale*speed;
-		pan[0] -= scale*m.x*speed;
-		pan[1] -= scale*m.y*speed;
-	}else if(zoomingOut){
-		scale += scale*speed;
 		pan[0] += scale*m.x*speed;
 		pan[1] += scale*m.y*speed;
+	}else if(zoomingOut){
+		scale += scale*speed;
+		pan[0] -= scale*m.x*speed;
+		pan[1] -= scale*m.y*speed;
 	}
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
