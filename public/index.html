@@ -13,47 +13,47 @@
 			<form class="slider-container">
 				<h3>Properties:</h3>
 				<div id="iterations">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="500" value="175" class="slider" />
+					<input autocomplete=off type="range" oninput="change(this.parentElement)" min="1" max="500" value="175" class="slider" />
 					Iterations:
-					<input type="number" onchange="change(this.parentElement)" class="value" value="175"></input>
+					<input autocomplete=off type="number" onchange="change(this.parentElement)" class="value" value="175"></input>
 					<span class="tooltip">Higher the value the more detail there will be.</span>
 				</div>
 				<div id="escape_radius">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="20" value="20" class="slider" />
+					<input autocomplete=off type="range" oninput="change(this.parentElement)" min="1" max="20" value="20" class="slider" />
 					Escape radius:
-					<input type="number" onchange="change(this.parentElement)" class="value" value="20"></input>
+					<input autocomplete=off type="number" onchange="change(this.parentElement)" class="value" value="20"></input>
 					<span class="tooltip">Has a "bubbly" effect at values smaller than 4.</span>
 				</div>
 				<div id="scale">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="100" value="1" class="slider" />
+					<input autocomplete=off type="range" oninput="change(this.parentElement)" min="1" max="100" value="1" class="slider" />
 					Zoom:
-					<input type="number" onchange="change(this.parentElement)" class="value" value="1"></input>
+					<input autocomplete=off type="number" onchange="change(this.parentElement)" class="value" value="1"></input>
 					<span id="zoomButton" onclick="zoom()">▶</span>
 				</div>
 				<div id="pos">
-					x: <input type="number" oninput="updateCords(this)" id="x" value=0><br>
-					y: <input type="number" oninput="updateCords(this)" id="y" value=0><br>
+					x: <input autocomplete=off type="number" oninput="updateCords(this)" id="x" value=0><br>
+					y: <input autocomplete=off type="number" oninput="updateCords(this)" id="y" value=0><br>
 				</div>
 				<div id="dbl_precision">
 					Emulate double precision:
-					<input type="checkbox" class="value" onchange="init(this.checked)">
+					<input autocomplete=off type="checkbox" class="value" onchange="init(this.checked)">
 					<span class="tooltip">Drastically improves quality but also drastically reduces performance.</span>
 				</div>
 				<h3>Colors:</h3>
 				<div id="r">
-					<input type="range" oninput="change(this.parentElement)" min="0" max="255" value="110" class="slider" />
+					<input autocomplete=off type="range" oninput="change(this.parentElement)" min="0" max="255" value="110" class="slider" />
 					Red:
-					<input type="number" onchange="change(this.parentElement)" class="value" value="110"></input>
+					<input autocomplete=off type="number" onchange="change(this.parentElement)" class="value" value="110"></input>
 				</div>
 				<div id="g">
-					<input type="range" oninput="change(this.parentElement)" min="0" max="255" value="10" class="slider" />
+					<input autocomplete=off type="range" oninput="change(this.parentElement)" min="0" max="255" value="10" class="slider" />
 					Green:
-					<input type="number" onchange="change(this.parentElement)"  class="value" value="10"></input>
+					<input autocomplete=off type="number" onchange="change(this.parentElement)"  class="value" value="10"></input>
 				</div>
 				<div id="b">
-					<input type="range" oninput="change(this.parentElement)" min="0" max="255" value="80" class="slider" />
+					<input autocomplete=off type="range" oninput="change(this.parentElement)" min="0" max="255" value="80" class="slider" />
 					Blue:
-					<input type="number" onchange="change(this.parentElement)"  class="value" value="80"></input>
+					<input autocomplete=off type="number" onchange="change(this.parentElement)"  class="value" value="80"></input>
 				</div>
 			</form>
 		</div>
