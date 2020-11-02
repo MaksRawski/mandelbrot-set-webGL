@@ -10,6 +10,7 @@ let escape_radius = 20;
 let speed = 0.01;
 let zoomingIn = false;
 let zoomingOut = false;
+let dbl_precision = false;
 let m = {x: 0, y: 0};
 
 let colors = [110/255, 10/255, 80/255];
@@ -37,9 +38,23 @@ const getShader = async (file, type) => {
 	}
 	return shader;
 }
+let mandelbrot;
+let mandelbrot_dbl;
 
-const init = async () =>{
-	let fragShader = await getShader('mandelbrot.frag', gl.FRAGMENT_SHADER);
+const init = async (hi_precision) =>{
+	let fragShader;
+	if (mandelbrot === undefined){
+		mandelbrot = await getShader('mandelbrot.frag', gl.FRAGMENT_SHADER);
+		mandelbrot_dbl = await getShader('mandelbrot_dbl.frag', gl.FRAGMENT_SHADER);
+	}
+	if (hi_precision){
+		fragShader = mandelbrot_dbl;
+		dbl_precision = true;
+	}
+	else{
+		fragShader = mandelbrot;
+		dbl_precision = false;
+	}
 	let vrtxShader = await getShader('pos.glsl', gl.VERTEX_SHADER);
 
 	let program = gl.createProgram();
@@ -74,9 +89,8 @@ const init = async () =>{
 
 let toDouble = (n) => {
 	let dbl = [];
-	dbl[0] = +n.toFixed(9).slice(0, -1);
-	dbl[1] = +n.toFixed(17) - dbl[0];
-	dbl[1] = +dbl[1].toFixed(17);
+	dbl[0] = Math.fround(n)
+	dbl[1] = n - dbl[0];
 
 	return dbl;
 }
@@ -192,4 +206,4 @@ let zoom = () => {
 	}
 	draw();
 }
-init();
+init(false);
