@@ -38,6 +38,42 @@ body {
 	width: 300px;
 }
 
+#dbl_precision {
+	margin: 10px;
+}
+
+div > .tooltip {
+	width: 300px;
+	position: absolute;
+	visibility: hidden;
+	z-index: 1;
+
+	padding: 8px 0px;
+	opacity: 0;
+	transform: translate(-100%, -120%);
+
+	font-size: 15px;
+	font-weight: bold;
+	word-wrap: break-word;
+	text-align: center;
+
+	background: #000;
+	border: 2px solid #000;
+	border-radius: 5px;
+
+	transition: all 0.3s;
+}
+
+div:hover > .tooltip {
+	visibility: visible;
+	opacity: 1;
+}
+
+div > .tooltip:hover {
+	visibility: hidden;
+	opacity: 0;
+}
+
 #zoomButton:hover {
 	cursor: pointer;
 }

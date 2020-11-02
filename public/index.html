@@ -16,11 +16,13 @@
 					<input type="range" oninput="change(this.parentElement)" min="1" max="500" value="175" class="slider" />
 					Iterations:
 					<input type="number" onchange="change(this.parentElement)" class="value" value="175"></input>
+					<span class="tooltip">Higher the value the more detail there will be.</span>
 				</div>
 				<div id="escape_radius">
-					<input type="range" oninput="change(this.parentElement)" min="1" max="50" value="20" class="slider" />
+					<input type="range" oninput="change(this.parentElement)" min="1" max="20" value="20" class="slider" />
 					Escape radius:
 					<input type="number" onchange="change(this.parentElement)" class="value" value="20"></input>
+					<span class="tooltip">Has a "bubbly" effect at values smaller than 4.</span>
 				</div>
 				<div id="scale">
 					<input type="range" oninput="change(this.parentElement)" min="1" max="100" value="1" class="slider" />
@@ -31,6 +33,11 @@
 				<div id="pos">
 					x: <input type="number" oninput="updateCords(this)" id="x" value=0><br>
 					y: <input type="number" oninput="updateCords(this)" id="y" value=0><br>
+				</div>
+				<div id="dbl_precision">
+					Emulate double precision:
+					<input type="checkbox" class="value">
+					<span class="tooltip">Drastically improves quality but also drastically reduces performance.</span>
 				</div>
 				<h3>Colors:</h3>
 				<div id="r">
